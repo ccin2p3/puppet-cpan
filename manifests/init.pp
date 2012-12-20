@@ -4,9 +4,7 @@ class cpan {
       package { "perl-modules": ensure => installed }
     }
     centos,redhat : {
-      package { "cpan":
-        ensure => installed,
-      }
+      # nothing to do.
     }
   }
 
