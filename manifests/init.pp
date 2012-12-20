@@ -1,6 +1,13 @@
 class cpan {
-  package { "cpan":
-    ensure => installed,
+  case $operatingsystem {
+    debian,ubuntu : {
+      package { "perl-modules": ensure => installed }
+    }
+    centos,redhat : {
+      package { "cpan":
+        ensure => installed,
+      }
+    }
   }
 
   file { "/etc/perl/CPAN/Config.pm":
