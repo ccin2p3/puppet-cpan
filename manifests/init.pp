@@ -25,7 +25,6 @@ class cpan {
         group  => root,
         mode   => 644,
         source => "puppet:///cpan/Config.pm",
-        require => File["/etc/perl/CPAN"]
       }
     }
   }
