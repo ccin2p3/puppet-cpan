@@ -1,20 +1,31 @@
-Puppet::Type.type(:cpan).provide(:cpan) do
+Puppet::Type.type(:cpan).provide( :default ) do
   @doc = "Manages cpan modules"
 
-  confine :feature => :posix
-  commands :cpan => 'cpan'
+  commands :cpan => '/usr/bin/cpan'
 
   def install
-    result = nil
-    unless run( "perl -M" + resource[:name] + " -e1" )
-      result = cpan( "install", resource[:name] )
-    else
-      result = resource[:name] + " already installed"
+  end
+
+  def force
+  end
+
+  def create
+    result = cpan( resource[:name] )
+  end
+
+  def destroy
+  end
+
+  def exists?
+    result = true
+    begin
+      Puppet.debug( "perl -M" + resource[:name].to_s + " -e1" )
+      result = system( "perl -M" + resource[:name] + " -e1" )
+    rescue => e
+      Puppet.debug( result + e.message )
+      result = false
     end
     result
   end
 
-  def force
-    cpan( "-fi", resource[:name] )
-  end
 end

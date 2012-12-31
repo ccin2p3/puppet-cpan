@@ -1,17 +1,8 @@
 Puppet::Type.newtype(:cpan) do
-  ensurable do
-    desc "cpan module, :present, :force"
+  ensurable
 
-    newvalue(:present) do
-      provider.install
-    end
-
-    newvalue(:force) do
-      provider.force
-    end
+  newparam(:name) do
+    desc "The name of the module."
   end
 
-  autorequire(:package) do
-    'cpan'
-  end
 end
