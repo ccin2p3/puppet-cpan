@@ -15,7 +15,8 @@ class cpan {
     owner  => root,
     group  => root,
     mode   => 644,
-    source => "puppet:///cpan/Config.pm"
+    source => "puppet:///cpan/Config.pm",
+    require => File["/etc/perl/CPAN"]
   }
 
 }
