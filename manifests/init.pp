@@ -19,8 +19,8 @@ class cpan () {
       }
     }
     centos,redhat: {
-      package { 'perl-CPAN': ensure => installed }
       if versioncmp($::operatingsystemmajrelease, '6') >= 0 {
+        package { 'perl-CPAN': ensure => installed }
         file { '/usr/share/perl5/CPAN/Config.pm':
           ensure => present,
           owner  => root,
