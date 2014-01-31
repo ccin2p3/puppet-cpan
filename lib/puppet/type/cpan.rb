@@ -1,4 +1,5 @@
 Puppet::Type.newtype(:cpan) do
+  @doc = "Install cpan modules"
   ensurable
 
   newparam(:name) do
