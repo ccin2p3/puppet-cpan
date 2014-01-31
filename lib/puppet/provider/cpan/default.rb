@@ -26,7 +26,7 @@ Puppet::Type.type(:cpan).provide( :default ) do
 
   def exists?
     Puppet.debug("perl -M#{resource[:name]} -e1 > /dev/null 2>&1")
-    output = system("/usr/bin/perl -M#{resource[:name]} -e1 > /log 2>&1")
+    output = system("/usr/bin/perl -M#{resource[:name]} -e1 > /dev/null 2>&1")
     estatus = $?.exitstatus
 
     case estatus
