@@ -3,8 +3,8 @@ class cpan (
   $manage_config = true,
   $manage_package = true,
 ) {
-  case $::operatingsystem {
-    debian,ubuntu: {
+  case ${::osfamily} {
+    Debian: {
       if $manage_package {
         package { 'perl-modules': ensure => installed }
       }
@@ -25,8 +25,8 @@ class cpan (
         }
       }
     }
-    centos,redhat: {
-      if versioncmp($::operatingsystemmajrelease, '6') >= 0 {
+    RedHat: {
+      if versioncmp(${::operatingsystemmajrelease}, '6') >= 0 {
         if $manage_package {
           package { 'perl-CPAN': ensure => installed }
         }
