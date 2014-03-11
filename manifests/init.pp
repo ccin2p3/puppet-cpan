@@ -7,6 +7,8 @@ class cpan (
     debian,ubuntu: {
       if $manage_package {
         package { 'perl-modules': ensure => installed }
+        package { 'gcc': ensure => installed }
+        package { 'make': ensure => installed }
       }
       if $manage_config {
         file { [ '/etc/perl', '/etc/perl/CPAN' ]:
@@ -29,6 +31,8 @@ class cpan (
       if versioncmp($::operatingsystemmajrelease, '6') >= 0 {
         if $manage_package {
           package { 'perl-CPAN': ensure => installed }
+          package { 'gcc': ensure => installed }
+          package { 'make': ensure => installed }
         }
         if $manage_config {
           file { '/usr/share/perl5/CPAN/Config.pm':
