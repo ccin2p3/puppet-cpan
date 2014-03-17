@@ -3,8 +3,8 @@ class cpan (
   $manage_config = true,
   $manage_package = true,
 ) {
-  case $::operatingsystem {
-    debian,ubuntu: {
+  case $::osfamily {
+    Debian: {
       if $manage_package {
         package { 'perl-modules': ensure => installed }
         package { 'gcc': ensure => installed }
@@ -27,7 +27,7 @@ class cpan (
         }
       }
     }
-    centos,redhat: {
+    Redhat: {
       if versioncmp($::operatingsystemmajrelease, '6') >= 0 {
         if $manage_package {
           package { 'perl-CPAN': ensure => installed }
@@ -56,7 +56,7 @@ class cpan (
       }
     }
     default: {
-      fail("Module ${module_name} is not supported on ${::operatingsystem}")
+      fail("Module ${module_name} is not supported on ${::osfamily}")
     }
   }
 }
