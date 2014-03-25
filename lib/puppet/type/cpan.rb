@@ -1,9 +1,31 @@
 Puppet::Type.newtype(:cpan) do
   @doc = "Install cpan modules"
-  ensurable
+  ensurable do
+	newvalue(:absent) do
+            if provider.exists?
+                provider.destroy
+            end
+        end
+
+        newvalue(:present) do
+            unless provider.exists?
+                provider.create
+            end
+        end
+        aliasvalue(:installed, :present)
+
+        newvalue(:latest) do
+            unless provider.latest?
+                provider.update
+            end
+        end 
+  end
 
   newparam(:name) do
     desc "The name of the module."
   end
-
+  newparam(:force, :boolean => true, :parent => Puppet::Parameter::Boolean) do
+	desc "Enable/Disable to force the installation of the module. Disabled by default."
+	defaultto :false
+  end
 end

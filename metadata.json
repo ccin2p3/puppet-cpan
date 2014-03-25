@@ -1,0 +1,52 @@
+{
+  "name": "meltwater-cpan",
+  "version": "1.0.0",
+  "source": "UNKNOWN",
+  "author": "meltwater",
+  "license": "Apache License, Version 2.0",
+  "summary": "UNKNOWN",
+  "description": "Provides a puppet type to easily install perl CPAN modules",
+  "project_page": "UNKNOWN",
+  "dependencies": [
+
+  ],
+  "types": [
+    {
+      "name": "cpan",
+      "doc": "Install cpan modules",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.\n\nValid values are `present`, `absent`, `latest`. "
+        },
+	{
+	  "name": "force",
+	  "doc":"Enable/Disable the installation of the module. Disabled by default.\n\nValid values are `true`, `false`"
+	}
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the module.\n\n"
+        }
+      ],
+      "providers": [
+        {
+          "name": "default",
+          "doc": "Manages cpan modules\n\n* Required binaries: `cpan`, `perl`."
+        }
+      ]
+    }
+  ],
+  "checksums": {
+    "Modulefile": "92c74701a5bdc136413278666a1e0106",
+    "README.md": "97f5e14f20694b55eeea4e00cae89fd4",
+    "Rakefile": "f39450f89f23380c06f6d6a36d0ec017",
+    "files/Config.pm": "8275e4cc16586abfa7d92ba92c3886ac",
+    "lib/puppet/provider/cpan/default.rb": "2a5c700c99147aaa1e33452e33503c88",
+    "lib/puppet/type/cpan.rb": "6c82dc9d17b00c60547811a3bb6f793d",
+    "manifests/init.pp": "a44a15d63438a60bd52b2a4722bc3194",
+    "spec/spec_helper.rb": "792eeb7aa7edafb93e2bc1d27c5e75c5",
+    "spec/type/cpan_spec.rb": "3e9398882212cd92645e12ca98f1a058"
+  }
+}
