@@ -24,7 +24,8 @@ Puppet::Type.newtype(:cpan) do
   newparam(:name) do
     desc "The name of the module."
   end
-  newparam(:force, :boolean => true, :parent => Puppet::Parameter::Boolean) do
+  #newparam(:force, :boolean => true, :parent => Puppet::Parameter::Boolean) do
+  newparam(:force, :boolean => true) do
 	desc "Enable/Disable to force the installation of the module. Disabled by default."
 	defaultto :false
   end
