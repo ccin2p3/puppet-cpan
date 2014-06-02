@@ -13,3 +13,11 @@ Usage Example
       require => Class['::cpan'],
       force   => true,
     }
+
+Package Management
+------------------
+To avoid conflicts with inhouse package management, use:
+
+    class {'cpan':
+      manage_package => false,
+    }
