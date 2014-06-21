@@ -1,5 +1,5 @@
 # Class cpan
-class cpan (
+define cpan (
   $manage_config = true,
   $manage_package = true,
 ) {
