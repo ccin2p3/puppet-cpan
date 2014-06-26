@@ -4,6 +4,7 @@ Puppet::Type.type(:cpan).provide( :default ) do
   commands :cpan     => 'cpan'
   commands :perl     => 'perl'
   confine  :osfamily => [:Debian, :RedHat]
+  env = 'PERL_MM_USE_DEFAULT=1'
 
   def install
   end
@@ -30,7 +31,6 @@ Puppet::Type.type(:cpan).provide( :default ) do
     else
 	Puppet.info("Forcing install for #{resource[:name]}")
 	system("yes | cpan -f #{resource[:name]}")
-
     end
 
     #cpan doesn't always provide the right exit code, so we double check
@@ -44,7 +44,7 @@ Puppet::Type.type(:cpan).provide( :default ) do
 
   def destroy
   end
-  
+
   def update
 	Puppet.info("Upgrading cpan module #{resource[:name]}")
 	Puppet.debug("cpan #{resource[:name]}")
@@ -55,7 +55,7 @@ Puppet::Type.type(:cpan).provide( :default ) do
 		system("yes | cpan -fi #{resource[:name]}")
 	end
 	estatus = $?.exitstatus
-	
+
 	if estatus != 0
       	   raise Puppet::Error, "cpan -i #{resource[:name]} failed with error code #{estatus}"
     	end
