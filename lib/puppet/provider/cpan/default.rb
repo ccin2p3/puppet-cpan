@@ -4,6 +4,7 @@ Puppet::Type.type(:cpan).provide( :default ) do
   commands :cpan     => 'cpan'
   commands :perl     => 'perl'
   confine  :osfamily => [:Debian, :RedHat]
+  env = 'PERL_MM_USE_DEFAULT=1'
 
   def install
   end
@@ -26,10 +27,10 @@ Puppet::Type.type(:cpan).provide( :default ) do
 
     Puppet.debug("cpan #{resource[:name]}")
     if resource[:force] == false then
-    	system("cpan #{resource[:name]}") 
-    else 
+    	system("#{env} cpan #{resource[:name]}")
+    else
 	Puppet.info("Forcing install for #{resource[:name]}")
-	system("cpan -f #{resource[:name]}") 
+	system("#{env} cpan -f #{resource[:name]}")
 
     end
 
@@ -49,10 +50,10 @@ Puppet::Type.type(:cpan).provide( :default ) do
 	Puppet.info("Upgrading cpan module #{resource[:name]}")
 	Puppet.debug("cpan #{resource[:name]}")
 	if resource[:force] == false then
-    		system("cpan -i #{resource[:name]}") 
-	else 
-		Puppet.info("Forcing upgrade for #{resource[:name]}") 
-		system("cpan -fi #{resource[:name]}") 
+    		system("#{env} cpan -i #{resource[:name]}")
+	else
+		Puppet.info("Forcing upgrade for #{resource[:name]}")
+		system("#{env} cpan -fi #{resource[:name]}")
 	end
 	estatus = $?.exitstatus
 	
