@@ -11,11 +11,11 @@ class cpan (
   case $::osfamily {
     Debian: {
       if $manage_package {
-        package { 'perl-modules': ensure => installed }
-        package { 'gcc': ensure => installed }
-        package { 'make': ensure => installed }
+        ensure_resource('package', 'perl-modules', { ensure => installed })
+        ensure_resource('package','gcc', { ensure => present })
+        ensure_resource('package', 'make', { ensure => present })
         if $local_lib {
-          package {'liblocal-lib-perl': ensure => installed }
+          ensure_resource('package', 'liblocal-lib-perl', { ensure => present })
         }
       }
       if $manage_config {
@@ -38,11 +38,11 @@ class cpan (
     Redhat: {
       if versioncmp($::operatingsystemmajrelease, '6') >= 0 {
         if $manage_package {
-          package { 'perl-CPAN': ensure => installed }
-          package { 'gcc': ensure => installed }
-          package { 'make': ensure => installed }
+          ensure_resource('package', 'perl-CPAN', { ensure => present })
+          ensure_resource('package', 'gcc', { ensure => present })
+          ensure_resource('package', 'make', { ensure => present })
           if $local_lib {
-            package {'perl-local-lib': ensure => installed }
+            ensure_resource('package', 'perl-local-lib', { ensure => present })
           }
         }
         if $manage_config {
