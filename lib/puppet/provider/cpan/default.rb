@@ -27,11 +27,10 @@ Puppet::Type.type(:cpan).provide( :default ) do
 
     Puppet.debug("cpan #{resource[:name]}")
     if resource[:force] == false then
-    	system("#{env} cpan #{resource[:name]}")
+    	system("yes | cpan #{resource[:name]}")
     else
 	Puppet.info("Forcing install for #{resource[:name]}")
-	system("#{env} cpan -f #{resource[:name]}")
-
+	system("yes | cpan -f #{resource[:name]}")
     end
 
     #cpan doesn't always provide the right exit code, so we double check
@@ -45,18 +44,18 @@ Puppet::Type.type(:cpan).provide( :default ) do
 
   def destroy
   end
-  
+
   def update
 	Puppet.info("Upgrading cpan module #{resource[:name]}")
 	Puppet.debug("cpan #{resource[:name]}")
 	if resource[:force] == false then
-    		system("#{env} cpan -i #{resource[:name]}")
+    		system("yes | cpan -i #{resource[:name]}")
 	else
 		Puppet.info("Forcing upgrade for #{resource[:name]}")
-		system("#{env} cpan -fi #{resource[:name]}")
+		system("yes | cpan -fi #{resource[:name]}")
 	end
 	estatus = $?.exitstatus
-	
+
 	if estatus != 0
       	   raise Puppet::Error, "cpan -i #{resource[:name]} failed with error code #{estatus}"
     	end
