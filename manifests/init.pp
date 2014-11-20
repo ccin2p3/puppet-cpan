@@ -2,7 +2,11 @@
 class cpan (
   $manage_config = true,
   $manage_package = true,
+  $installdirs = 'site',
 ) {
+  unless $installdirs =~ /^(perl|site|vendor)$/ {
+    fail("installdirs must be one of {perl,site,vendor}")
+  }
   case $::osfamily {
     'Debian': {
       if $manage_package {
@@ -22,7 +26,7 @@ class cpan (
           owner   => root,
           group   => root,
           mode    => '0644',
-          source  => 'puppet:///modules/cpan/Config.pm',
+          content  => template('cpan/Config.pm.erb'),
           require => File['/etc/perl/CPAN']
         }
       }
@@ -40,7 +44,7 @@ class cpan (
             owner  => root,
             group  => root,
             mode   => '0644',
-            source => 'puppet:///modules/cpan/Config.pm',
+            content  => template('cpan/Config.pm.erb'),
           }
         }
       } else {
@@ -51,6 +55,7 @@ class cpan (
             group  => root,
             mode   => '0644',
             source => 'puppet:///modules/cpan/Config.pm',
+            content  => template('cpan/Config.pm.erb'),
           }
         }
       }
