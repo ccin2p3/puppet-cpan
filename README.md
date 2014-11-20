@@ -21,3 +21,13 @@ To avoid conflicts with inhouse package management, use:
     class {'cpan':
       manage_package => false,
     }
+
+Install Destination
+-------------------
+To control target installation path, use:
+
+    class {'cpan':
+      installdirs => 'vendor'
+    }
+
+Any of `site` (default), `perl` and `vendor` are accepted
