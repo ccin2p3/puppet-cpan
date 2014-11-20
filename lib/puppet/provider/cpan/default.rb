@@ -4,7 +4,7 @@ Puppet::Type.type(:cpan).provide( :default ) do
   commands :cpan     => 'cpan'
   commands :perl     => 'perl'
   confine  :osfamily => [:Debian, :RedHat]
-  env = 'PERL_MM_USE_DEFAULT=1'
+  ENV['PERL_MM_USE_DEFAULT'] = '1'
 
   def install
   end
