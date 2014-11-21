@@ -30,4 +30,19 @@ To control target installation path, use:
       installdirs => 'vendor'
     }
 
-Any of `site` (default), `perl` and `vendor` are accepted
+Any of `site` (default), `perl` and `vendor` are accepted.
+
+To further control the location of installed modules, you can use [local::lib](http://search.cpan.org/perldoc?local::lib):
+
+    cpan { 'Foo::Bar':
+      ensure    => present,
+      local_lib => '/opt',
+    }
+
+This will install the module into `/opt`. Of course you need to adjust `@INC` of your code in order to use that
+new location, *e.g.* by using `perl -Mlocal::lib=/opt myapp.pl`.
+
+You can also define the default value of `local_lib` for all `cpan` resources:
+
+    Cpan { local_lib => '/opt' }
+
