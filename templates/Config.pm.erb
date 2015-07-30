@@ -64,6 +64,9 @@ $CPAN::Config = {
   'wget' => q[/usr/bin/wget],
   'yaml_load_code' => q[0],
   'yaml_module' => q[YAML],
+  <% @config_hash.each do |k,v| -%>
+    '<%= k -%>' => 'q[<%= v -%>]',
+  <% end -%>
 };
 1;
 __END__
