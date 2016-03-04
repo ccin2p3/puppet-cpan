@@ -9,7 +9,7 @@ class cpan (
     fail("installdirs must be one of {perl,site,vendor}")
   }
   case $::osfamily {
-    Debian: {
+    'Debian': {
       if $manage_package {
         package { 'perl-modules': ensure => installed }
         package { 'gcc': ensure => installed }
@@ -35,7 +35,7 @@ class cpan (
         }
       }
     }
-    Redhat: {
+    'Redhat': {
       if versioncmp($::operatingsystemmajrelease, '6') >= 0 {
         if $manage_package {
           package { 'perl-CPAN': ensure => installed }
