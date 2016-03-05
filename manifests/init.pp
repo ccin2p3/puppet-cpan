@@ -4,6 +4,7 @@ class cpan (
   $manage_package = true,
   $installdirs = 'site',
   $local_lib = false,
+  $config_hash = { 'build_requires_install_policy' => 'no' },
 ) {
   unless $installdirs =~ /^(perl|site|vendor)$/ {
     fail("installdirs must be one of {perl,site,vendor}")
