@@ -1,7 +1,7 @@
 #
-class { 'cpan':
+class { '::cpan':
   manage_package => false,
-  manage_config => false,
+  manage_config  => false,
 }
 
 Cpan {
@@ -11,4 +11,3 @@ Cpan {
 cpan { 'Riemann::Client':
   ensure    => present,
 }
-
