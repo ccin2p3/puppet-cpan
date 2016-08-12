@@ -1,4 +1,7 @@
-# Class: cpan::params
+# == Class: cpan::params
+#
+# Parameters for cpan class
+#
 class cpan::params {
 
   $manage_config     = true

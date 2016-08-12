@@ -1,10 +1,28 @@
 require 'spec_helper'
 
-describe 'cpan' do
+describe 'cpan', :type => 'class' do
   let(:facts) { {} }
-  ['Debian','RedHat'].each do |system|
+  ['Debian', 'RedHat'].each do |system|
     context "On a #{system} OS ..." do
-      let(:facts) { super().merge( :osfamily => system ) }
+      if system == 'Debian'
+        let(:facts) { super().merge(
+            :operatingsystem           => system,
+            :osfamily                  => system,
+            :operatingsystemmajrelease => '6',
+            :path                      => '/usr/local/bin:/usr/bin:/bin',
+          )
+        }
+      end
+
+      if system == 'RedHat'
+        let(:facts) { super().merge(
+            :osfamily                  => system,
+            :operatingsystem           => system,
+            :operatingsystemmajrelease => '6',
+            :path                      => '/usr/local/bin:/usr/bin:/bin',
+          )
+        }
+      end
 
       it { should contain_class('cpan::install') }
       it { should contain_class('cpan::config') }
@@ -48,6 +66,13 @@ describe 'cpan' do
 
       describe 'cpan::config on RedHat and operatingsystemrelease 6' do
         let(:facts) { super().merge(:osfamily => 'RedHat', :operatingsystemmajrelease => '6') }
+        it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_owner('root') }
+        it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_group('root') }
+        it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_mode('0644') }
+      end
+
+      describe 'cpan::config on RedHat and operatingsystemrelease 7' do
+        let(:facts) { super().merge(:osfamily => 'RedHat', :operatingsystemmajrelease => '7') }
         it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_owner('root') }
         it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_group('root') }
         it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_mode('0644') }

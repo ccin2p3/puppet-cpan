@@ -1,4 +1,34 @@
-# Class cpan
+# == Class: cpan
+#
+# Installs cpan
+#
+# === Parameters
+#
+# [*manage_config*]
+#
+# [*manage_package*]
+#
+# [*installdirs*]
+#
+# [*local_lib*]
+#
+# [*config_template*]
+#
+# [*config_hash*]
+#
+# [*package_ensure*]
+#
+# === Examples
+#
+# class {'::cpan':
+#   manage_config  => true,
+#   manage_package => true,
+#   package_ensure => 'present',
+#   installdirs    => 'site',
+#   local_lib      => false,
+#   config_hash    => { 'build_requires_install_policy' => 'no' },
+# }
+#
 class cpan (
   $manage_config     = $cpan::params::manage_config,
   $manage_package    = $cpan::params::manage_package,
