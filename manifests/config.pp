@@ -30,6 +30,14 @@ class cpan::config inherits cpan {
             mode    => '0644',
             content => template($::cpan::config_template),
           }
+        } elsif ( $::facts['os']['name'] == 'Amazon') {
+          file { '/usr/share/perl5/CPAN/Config.pm':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            content => template($::cpan::config_template),
+          }
         } else {
           file { '/usr/lib/perl5/5.8.8/CPAN/Config.pm':
             ensure  => present,
