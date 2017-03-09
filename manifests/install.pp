@@ -5,9 +5,11 @@
 class cpan::install inherits cpan {
 
   if $::cpan::manage_package {
-    if !defined(Package[$::cpan::package_name]) {
-      package { $::cpan::package_name :
-        ensure => $::cpan::package_ensure,
+    $::cpan::package_name.each |$package| {
+      if !defined(Package[$package]) {
+        package { $package :
+          ensure => $::cpan::package_ensure,
+        }
       }
     }
   }
