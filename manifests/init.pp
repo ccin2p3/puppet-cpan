@@ -45,6 +45,7 @@ class cpan (
   $package_ensure    = $cpan::params::package_ensure,
   $ftp_proxy         = $cpan::params::ftp_proxy,
   $http_proxy        = $cpan::params::http_proxy,
+  $urllist           = $cpan::params::urllist,
 ) inherits cpan::params {
 
   validate_bool($manage_config)
@@ -59,6 +60,7 @@ class cpan (
   if $http_proxy {
     validate_string($http_proxy)
   }
+  validate_array($urllist)
 
   anchor { 'cpan::begin': } ->
   class { '::cpan::install': } ->

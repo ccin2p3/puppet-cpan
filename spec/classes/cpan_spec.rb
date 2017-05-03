@@ -97,6 +97,12 @@ describe 'cpan', :type => 'class' do
         context 'with default parameters' do
           it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'http_proxy' => q\[\],$}) }
           it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'ftp_proxy' => q\[\],$}) }
+          it 'has empty urlist' do
+            verify_contents(catalogue, '/usr/share/perl5/CPAN/Config.pm',[
+              "  'urllist' => [",
+              "  ],"
+            ])
+          end
         end
         context 'with proxies set' do
           let(:params) do
@@ -107,6 +113,40 @@ describe 'cpan', :type => 'class' do
           end
           it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'ftp_proxy' => q\[http://your_ftp_proxy\.com\],$}) }
           it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'http_proxy' => q\[http://your_http_proxy\.com\],$}) }
+        end
+        context 'with urllist set' do
+          describe 'single url' do
+            let(:params) do
+              {
+                :urllist => ['http://httpupdate3.cpanel.net/CPAN/'],
+              }
+            end
+            it do
+              verify_contents(catalogue, '/usr/share/perl5/CPAN/Config.pm',[
+                "  'urllist' => [",
+                "    q[http://httpupdate3.cpanel.net/CPAN/]",
+                "  ],"
+              ])
+            end
+          end
+          describe 'two urls' do
+            let(:params) do
+              {
+                :urllist => [
+                  'http://httpupdate3.cpanel.net/CPAN/',
+                  'ftp://cpan.cse.msu.edu/'
+                ],
+              }
+            end
+            it do
+              verify_contents(catalogue, '/usr/share/perl5/CPAN/Config.pm',[
+                "  'urllist' => [",
+                "    q[http://httpupdate3.cpanel.net/CPAN/],",
+                "    q[ftp://cpan.cse.msu.edu/]",
+                "  ],"
+              ])
+            end
+          end
         end
       end
     end

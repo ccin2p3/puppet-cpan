@@ -59,7 +59,9 @@ $CPAN::Config = {
   'test_report' => q[0],
   'trust_test_report_history' => q[0],
   'unzip' => q[],
-  'urllist' => [],
+  'urllist' => [
+<%= @urllist.map{ |url| "    q[#{url}]" }.join(",\n") %>
+  ],
   'use_sqlite' => q[0],
   'wget' => q[/usr/bin/wget],
   'yaml_load_code' => q[0],
