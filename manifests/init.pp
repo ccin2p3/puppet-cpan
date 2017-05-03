@@ -53,8 +53,12 @@ class cpan (
   validate_bool($local_lib)
   validate_string($config_template)
   validate_string($package_ensure)
-  validate_string($ftp_proxy)
-  validate_string($http_proxy)
+  if $ftp_proxy {
+    validate_string($ftp_proxy)
+  }
+  if $http_proxy {
+    validate_string($http_proxy)
+  }
 
   anchor { 'cpan::begin': } ->
   class { '::cpan::install': } ->

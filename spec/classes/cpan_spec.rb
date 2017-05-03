@@ -91,6 +91,24 @@ describe 'cpan', :type => 'class' do
           /Module cpan is not supported/
         ) }
       end
+
+      describe "template contents" do
+        let(:facts) { super().merge(:osfamily => 'RedHat', :operatingsystemmajrelease => '7') }
+        context 'with default parameters' do
+          it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'http_proxy' => q\[\],$}) }
+          it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'ftp_proxy' => q\[\],$}) }
+        end
+        context 'with proxies set' do
+          let(:params) do
+            {
+              :ftp_proxy  => 'http://your_ftp_proxy.com',
+              :http_proxy => 'http://your_http_proxy.com'
+            }
+          end
+          it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'ftp_proxy' => q\[http://your_ftp_proxy\.com\],$}) }
+          it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'http_proxy' => q\[http://your_http_proxy\.com\],$}) }
+        end
+      end
     end
   end
 end
