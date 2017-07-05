@@ -52,6 +52,8 @@ class {'::cpan':
   installdirs    => 'site',
   local_lib      => false,
   config_hash    => { 'build_requires_install_policy' => 'no' },
+  ftp_proxy      => 'http://your_ftp_proxy.com',
+  http_proxy     => 'http://your_http_proxy.com',
 }
 ```
 
@@ -106,6 +108,15 @@ You can also define the default value of `local_lib` for all `cpan` resources:
 Cpan { local_lib => '/opt' }
 ```
 
+### Configure a Proxy
+
+```puppet
+class {'::cpan':
+  ftp_proxy  => 'http://your_ftp_proxy.com',
+  http_proxy => 'http://your_http_proxy.com',
+}
+```
+
 
 ## Reference
 
@@ -131,6 +142,10 @@ Cpan { local_lib => '/opt' }
 #### `config_hash`
 
 #### `package_ensure`
+
+#### `ftp_proxy`
+
+#### `http_proxy`
 
 ## Limitations
 
