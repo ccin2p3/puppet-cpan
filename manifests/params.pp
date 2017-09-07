@@ -11,6 +11,9 @@ class cpan::params {
   $config_hash       = { 'build_requires_install_policy' => 'no' }
   $package_ensure    = 'present'
   $common_package    = ['gcc','make']
+  $ftp_proxy         = undef
+  $http_proxy        = undef
+  $urllist           = []
 
   unless $installdirs =~ /^(perl|site|vendor)$/ {
     fail('installdirs must be one of {perl,site,vendor}')

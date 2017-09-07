@@ -18,6 +18,10 @@
 #
 # [*package_ensure*]
 #
+# [*ftp_proxy*]
+#
+# [*http_proxy*]
+#
 # === Examples
 #
 # class {'::cpan':
@@ -27,6 +31,8 @@
 #   installdirs    => 'site',
 #   local_lib      => false,
 #   config_hash    => { 'build_requires_install_policy' => 'no' },
+#   ftp_proxy      => 'http://your_ftp_proxy.com',
+#   http_proxy     => 'http://your_http_proxy.com',
 # }
 #
 class cpan (
@@ -37,6 +43,9 @@ class cpan (
   $config_template   = $cpan::params::config_template,
   $config_hash       = $cpan::params::config_hash,
   $package_ensure    = $cpan::params::package_ensure,
+  $ftp_proxy         = $cpan::params::ftp_proxy,
+  $http_proxy        = $cpan::params::http_proxy,
+  $urllist           = $cpan::params::urllist,
 ) inherits cpan::params {
 
   validate_bool($manage_config)
@@ -45,6 +54,13 @@ class cpan (
   validate_bool($local_lib)
   validate_string($config_template)
   validate_string($package_ensure)
+  if $ftp_proxy {
+    validate_string($ftp_proxy)
+  }
+  if $http_proxy {
+    validate_string($http_proxy)
+  }
+  validate_array($urllist)
 
   anchor { 'cpan::begin': } ->
   class { '::cpan::install': } ->
