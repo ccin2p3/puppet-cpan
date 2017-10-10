@@ -31,12 +31,14 @@ Puppet::Type.type(:cpan).provide( :default ) do
       ll = "-Mlocal::lib=#{resource[:local_lib]}"
     end
 
+    umask = "umask #{resource[:umask]};" if resource[:umask]
+
     Puppet.debug("cpan #{resource[:name]}")
     if resource.force?
       Puppet.info("Forcing install for #{resource[:name]}")
-      system("yes | perl #{ll} -MCPAN -e 'CPAN::force CPAN::install #{resource[:name]}'")
+      system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::force CPAN::install #{resource[:name]}'")
     else
-      system("yes | perl #{ll} -MCPAN -e 'CPAN::install #{resource[:name]}'")
+      system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::install #{resource[:name]}'")
     end
 
     #cpan doesn't always provide the right exit code, so we double check
@@ -57,11 +59,13 @@ Puppet::Type.type(:cpan).provide( :default ) do
     if resource[:local_lib]
       ll = "-Mlocal::lib=#{resource[:local_lib]}"
     end
+    umask = "umask #{resource[:umask]};" if resource[:umask]
+
     if resource.force?
       Puppet.info("Forcing upgrade for #{resource[:name]}")
-      system("yes | perl #{ll} -MCPAN -e 'CPAN::force CPAN::install #{resource[:name]}'")
+      system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::force CPAN::install #{resource[:name]}'")
     else
-      system("yes | perl #{ll} -MCPAN -e 'CPAN::install #{resource[:name]}'")
+      system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::install #{resource[:name]}'")
     end
     estatus = $?.exitstatus
     
