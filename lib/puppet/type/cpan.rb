@@ -1,3 +1,5 @@
+require 'puppet/parameter/boolean'
+
 Puppet::Type.newtype(:cpan) do
   @doc = "Install cpan modules"
   ensurable do
@@ -27,9 +29,8 @@ Puppet::Type.newtype(:cpan) do
   newparam(:local_lib) do
     desc "Destination directory or `false`"
   end
-  #newparam(:force, :boolean => true, :parent => Puppet::Parameter::Boolean) do
-  newparam(:force, :boolean => true) do
-  desc "Enable/Disable to force the installation of the module. Disabled by default."
-  defaultto :false
+  newparam(:force, :boolean => true, :parent => Puppet::Parameter::Boolean) do
+    desc 'Enable/Disable to force the installation of the module. Disabled by default.'
+    defaultto :false
   end
 end
