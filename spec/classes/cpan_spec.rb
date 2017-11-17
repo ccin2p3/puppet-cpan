@@ -74,7 +74,7 @@ describe 'cpan', :type => 'class' do
       describe 'cpan::config on RedHat and operatingsystemrelease 7' do
         let(:facts) { super().merge(:osfamily => 'RedHat', :operatingsystemmajrelease => '7') }
         it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_owner('root') }
-        it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_group('root') }
+        it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_group('wheel') }
         it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_mode('0644') }
       end
 
