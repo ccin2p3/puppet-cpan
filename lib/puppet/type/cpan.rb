@@ -18,7 +18,7 @@ Puppet::Type.newtype(:cpan) do
 
     newvalue(:latest) do
       unless provider.latest?
-        provider.update
+        provider.create
       end
     end
   end

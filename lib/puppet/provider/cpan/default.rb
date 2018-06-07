@@ -1,96 +1,48 @@
-Puppet::Type.type(:cpan).provide( :default ) do
-  @doc = "Manages cpan modules"
+Puppet::Type.type(:cpan).provide(:default) do
+  @doc     = 'Manages cpan modules'
+  @ll      = "-Mlocal::lib=#{resource[:local_lib]}" if resource[:local_lib]
+  @umask   = "umask #{resource[:umask]};" if resource[:umask]
+  @current = `perl #{ll} -M#{resource[:name]} -e 'print $#{resource[:name]}::VERSION' 2>/dev/null;`
+  @force   = resource.force? ? 'CPAN::force' : ''
 
-  commands :cpan     => 'cpan'
-  commands :perl     => 'perl'
-  confine  :osfamily => [:Debian, :RedHat, :Windows]
+  commands cpan: 'cpan'
+  commands perl: 'perl'
+  confine  osfamily: %i[Debian DragonFly FreeBSD RedHat Windows]
   ENV['PERL_MM_USE_DEFAULT'] = '1'
 
-  def install
-  end
+  def install; end
 
-  def force
-  end
+  def force; end
 
   def latest?
-    if resource[:local_lib]
-      ll = "-Mlocal::lib=#{resource[:local_lib]}"
+    return false if current == ''
+    cpan_str = `perl #{ll} -e 'use CPAN; my $mod=CPAN::Shell->expand("Module","#{resource[:name]}"); printf("%s", $mod->cpan_version eq "undef" || !defined($mod->cpan_version) ? "-" : $mod->cpan_version);'`
+    latest   = cpan_str.match(/^[a-zA-Z]?([0-9]+.?[0-9]*\.?[0-9]*)$/)[1]
+    if Puppet::Util::Package.versioncmp(latest.chomp, current.chomp) > 0
+      return true
     end
-    current_version=`perl #{ll} -M#{resource[:name]} -e 'print $#{resource[:name]}::VERSION'`
-    cpan_str=`perl #{ll} -e 'use CPAN; my $mod=CPAN::Shell->expand("Module","#{resource[:name]}"); printf("%s", $mod->cpan_version eq "undef" || !defined($mod->cpan_version) ? "-" : $mod->cpan_version);'`
-    latest_version=cpan_str.match(/^[0-9]+.?[0-9]*$/)[0]
-    current_version.chomp
-    latest_version.chomp
-    if current_version < latest_version
-    return false else return true end
+    false
   end
 
   def create
     Puppet.info("Installing cpan module #{resource[:name]}")
-    if resource[:local_lib]
-      ll = "-Mlocal::lib=#{resource[:local_lib]}"
-    end
-
-    umask = "umask #{resource[:umask]};" if resource[:umask]
-
-    Puppet.debug("cpan #{resource[:name]}")
-    if resource.force?
-      Puppet.info("Forcing install for #{resource[:name]}")
-      system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::force CPAN::install #{resource[:name]}'")
-    else
-      system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::install #{resource[:name]}'")
-    end
-
-    #cpan doesn't always provide the right exit code, so we double check
-    system("perl #{ll} -M#{resource[:name]} -e1 > /dev/null 2>&1")
-    estatus = $?.exitstatus
-
-    if estatus != 0
-      raise Puppet::Error, "cpan #{resource[:name]} failed with error code #{estatus}"
-    end
+    system("#{umask} yes | perl #{ll} -MCPAN -e '#{force} CPAN::install #{resource[:name]}'")
+    raise Puppet::Error, "cpan #{resource[:name]} failed" unless exists?
   end
 
-  def destroy
-  end
-  
-  def update
-    Puppet.info("Upgrading cpan module #{resource[:name]}")
-    Puppet.debug("cpan #{resource[:name]}")
-    if resource[:local_lib]
-      ll = "-Mlocal::lib=#{resource[:local_lib]}"
-    end
-    umask = "umask #{resource[:umask]};" if resource[:umask]
-
-    if resource.force?
-      Puppet.info("Forcing upgrade for #{resource[:name]}")
-      system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::force CPAN::install #{resource[:name]}'")
-    else
-      system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::install #{resource[:name]}'")
-    end
-    estatus = $?.exitstatus
-    
-    if estatus != 0
-      raise Puppet::Error, "CPAN::install #{resource[:name]} failed with error code #{estatus}"
-    end
-  end
+  def destroy; end
 
   def exists?
-    if resource[:local_lib]
-      ll = "-Mlocal::lib=#{resource[:local_lib]}"
-    end
     Puppet.debug("perl #{ll} -M#{resource[:name]} -e1 > /dev/null 2>&1")
-    output = `perl #{ll} -M#{resource[:name]} -e1 > /dev/null 2>&1`
-    estatus = $?.exitstatus
+    output  = `perl #{ll} -M#{resource[:name]} -e1 > /dev/null 2>&1`
+    estatus = $CHILD_STATUS.exitstatus
 
     case estatus
     when 0
-      true
+      return true
     when 2
-      Puppet.debug("#{resource[:name]} not installed")
-      false
-    else
-      raise Puppet::Error, "perl #{ll} -M#{resource[:name]} -e1 failed with error code #{estatus}: #{output}"
+      return false
     end
+    raise Puppet::Error, "perl #{ll} -M#{resource[:name]} -e1 failed: #{estatus} #{output}"
   end
-
 end
