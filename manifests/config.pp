@@ -11,38 +11,27 @@ class cpan::config inherits cpan {
           owner  => root,
           group  => root,
           mode   => '0755',
-        }
-        file { '/etc/perl/CPAN/Config.pm':
-          ensure  => present,
-          owner   => root,
-          group   => root,
-          mode    => '0644',
-          content => template($::cpan::config_template),
-          require => File['/etc/perl/CPAN'],
+          before => File[$perl_config],
         }
       }
-      'RedHat': {
-        if versioncmp($::operatingsystemmajrelease, '6') >= 0  and $::operatingsystem != 'Fedora' {
-          file { '/usr/share/perl5/CPAN/Config.pm':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            content => template($::cpan::config_template),
-          }
-        } else {
-          file { '/usr/lib/perl5/5.8.8/CPAN/Config.pm':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            content => template($::cpan::config_template),
-          }
+      'DragonFly', 'FreeBSD': {
+        file { [ '/usr/local/perl5', "/usr/local/perl5/5.${::perl['minversion']}", "/usr/local/perl5/5.${::perl['minversion']}/CPAN" ]:
+          ensure => directory,
+          owner  => 0,
+          group  => 0,
+          mode   => '0755',
+          before => File[$perl_config],
         }
       }
-      default: {
-        fail("Module ${module_name} is not supported on ${::osfamily} os.")
-      }
+      default: { }
+    }
+
+    file { $::cpan::perl_config:
+      ensure  => present,
+      owner   => $root_user,
+      group   => $root_group,
+      mode    => '0644',
+      content => template($::cpan::config_template),
     }
   }
 }
