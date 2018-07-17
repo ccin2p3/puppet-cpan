@@ -36,7 +36,7 @@ Puppet::Type.type(:cpan).provide( :default ) do
     Puppet.debug("cpan #{resource[:name]}")
     if resource.force?
       Puppet.info("Forcing install for #{resource[:name]}")
-      system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::force CPAN::install #{resource[:name]}'")
+      system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::Shell->force(qw(install #{resource[:name]}))'")
     else
       system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::install #{resource[:name]}'")
     end
@@ -63,7 +63,7 @@ Puppet::Type.type(:cpan).provide( :default ) do
 
     if resource.force?
       Puppet.info("Forcing upgrade for #{resource[:name]}")
-      system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::force CPAN::install #{resource[:name]}'")
+      system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::Shell->force(qw(install #{resource[:name]}))'")
     else
       system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::install #{resource[:name]}'")
     end
