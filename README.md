@@ -158,3 +158,8 @@ The module has been tested on:
 * CentOS 6/7
 
 Testing on other platforms has been light and cannot be guaranteed.
+
+## Maintainer
+
+* 2019-now [CC-IN2P3](https://github.com/ccin2p3)
+* 2012-2017 [Meltwater](https://github.com/meltwater)
