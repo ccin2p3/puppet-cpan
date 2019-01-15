@@ -1,10 +1,4 @@
-[DEPRECATED] puppet-cpan
-========================
-
-
-NOTE: This repository is no longer maintained
----------------------------------------------
-
+# puppet-cpan
 
 [![Puppet Forge Version](http://img.shields.io/puppetforge/v/meltwater/cpan.svg)](https://forge.puppetlabs.com/meltwater/cpan)
 [![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/meltwater/cpan.svg)](https://forge.puppetlabs.com/meltwater/cpan)
