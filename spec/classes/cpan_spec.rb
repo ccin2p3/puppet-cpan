@@ -114,6 +114,30 @@ describe 'cpan', :type => 'class' do
           it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'ftp_proxy' => q\[http://your_ftp_proxy\.com\],$}) }
           it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'http_proxy' => q\[http://your_http_proxy\.com\],$}) }
         end
+        context 'with custom param set' do
+          describe 'string' do
+            let(:params) do
+              {
+                :config_hash  => { 'foo' => 'bar' }
+              }
+            end
+            it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'foo' => q\[bar],$}) }
+          end
+          describe 'array' do
+            let(:params) do
+              {
+                :config_hash  => { 'foo' => ['baz','bar'] }
+              }
+            end
+            it do
+              verify_contents(catalogue, '/usr/share/perl5/CPAN/Config.pm',[
+                "  'foo' => [",
+                "    q[baz],",
+                "    q[bar]",
+              ])
+            end
+          end
+        end
         context 'with urllist set' do
           describe 'single url' do
             let(:params) do
