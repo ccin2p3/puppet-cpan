@@ -15,10 +15,6 @@ class cpan::params {
   $http_proxy        = undef
   $urllist           = []
 
-  unless $installdirs =~ /^(perl|site|vendor)$/ {
-    fail('installdirs must be one of {perl,site,vendor}')
-  }
-
   $manage_package = $::osfamily ? {
     'Debian' => true,
     'Redhat' => true,
