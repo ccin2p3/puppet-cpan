@@ -26,7 +26,7 @@ class cpan::params {
   }
   case $::osfamily {
     'Debian': {
-      $common_os_package = ['perl-modules']
+      $common_os_package = ['perl']
       if $local_lib {
         $local_lib_package  = ['liblocal-lib-perl']
       } else {

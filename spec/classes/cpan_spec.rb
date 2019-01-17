@@ -34,7 +34,7 @@ describe 'cpan', :type => 'class' do
         it { should contain_package('make').with(:ensure => 'present') }
 
         if system == 'Debian'
-          it { should contain_package('perl-modules').with(:ensure => 'present') }
+          it { should contain_package('perl').with(:ensure => 'present') }
         end
 
         if system == 'RedHat'
@@ -46,7 +46,7 @@ describe 'cpan', :type => 'class' do
           it { should contain_package('gcc').with_ensure('latest') }
           it { should contain_package('make').with_ensure('latest') }
           if system == 'Debian'
-            it { should contain_package('perl-modules').with(:ensure => 'latest') }
+            it { should contain_package('perl').with(:ensure => 'latest') }
           end
           if system == 'RedHat'
             it { should contain_package('perl-CPAN').with(:ensure => 'latest') }
