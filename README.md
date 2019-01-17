@@ -1,11 +1,11 @@
 # puppet-cpan
 
-[![Puppet Forge Version](http://img.shields.io/puppetforge/v/meltwater/cpan.svg)](https://forge.puppetlabs.com/meltwater/cpan)
-[![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/meltwater/cpan.svg)](https://forge.puppetlabs.com/meltwater/cpan)
-[![Travis branch](https://img.shields.io/travis/meltwater/puppet-cpan/master.svg)](https://travis-ci.org/meltwater/puppet-cpan)
+[![Puppet Forge Version](http://img.shields.io/puppetforge/v/ccin2p3/cpan.svg)](https://forge.puppetlabs.com/ccin2p3/cpan)
+[![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/ccin2p3/cpan.svg)](https://forge.puppetlabs.com/ccin2p3/cpan)
+[![Travis branch](https://img.shields.io/travis/ccin2p3/puppet-cpan/master.svg)](https://travis-ci.org/ccin2p3/puppet-cpan)
 [![By Meltwater](https://img.shields.io/badge/by-meltwater-28bbbb.svg)](http://underthehood.meltwater.com/)
-[![Maintenance](https://img.shields.io/maintenance/yes/2016.svg)](https://github.com/meltwater/puppet-cpan/commits/master)
-[![license](https://img.shields.io/github/license/meltwater/puppet-cpan.svg)](https://github.com/meltwater/puppet-cpan/blob/master/LICENSE)
+[![Maintenance](https://img.shields.io/maintenance/yes/2016.svg)](https://github.com/ccin2p3/puppet-cpan/commits/master)
+[![license](https://img.shields.io/github/license/ccin2p3/puppet-cpan.svg)](https://github.com/ccin2p3/puppet-cpan/blob/master/LICENSE)
 
 #### Table of Contents
 
