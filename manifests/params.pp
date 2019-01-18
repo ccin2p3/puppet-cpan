@@ -79,7 +79,7 @@ class cpan::params {
 
   $manage_package = $::osfamily ? {
     'Debian' => true,
-    'Redhat' => true,
+    'RedHat' => true,
     default  => false,
   }
   case $::osfamily {
