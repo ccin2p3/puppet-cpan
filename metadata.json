@@ -1,6 +1,6 @@
 {
   "name": "ccin2p3-cpan",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": "meltwater",
   "summary": "Provides a puppet type to easily install Perl CPAN modules.",
   "description": "Puppet module for installing and configuring the Marathon framework for Mesos.",
