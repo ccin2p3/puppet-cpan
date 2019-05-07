@@ -31,6 +31,13 @@ Puppet::Type.newtype(:cpan) do
     desc 'Destination directory or `false`'
   end
 
+  newparam(:environment) do
+    desc 'List of environment variables in the form of a Hash'
+    validate do |value|
+      raise ArgumentError, 'Hash expected for environment' unless value.is_a?(Hash)
+    end
+  end
+
   newparam(:force, :boolean => true, :parent => Puppet::Parameter::Boolean) do
     desc 'Enable/Disable to force the installation of the module. Disabled by default.'
     defaultto :false

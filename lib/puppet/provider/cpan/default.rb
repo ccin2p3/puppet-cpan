@@ -32,6 +32,11 @@ Puppet::Type.type(:cpan).provide( :default ) do
     end
 
     umask = "umask #{resource[:umask]};" if resource[:umask]
+    if resource[:environment]
+      resource[:environment].each do |var, val|
+        ENV[var] = val
+      end
+    end
 
     Puppet.debug("cpan #{resource[:name]}")
     if resource.force?
@@ -60,6 +65,11 @@ Puppet::Type.type(:cpan).provide( :default ) do
       ll = "-Mlocal::lib=#{resource[:local_lib]}"
     end
     umask = "umask #{resource[:umask]};" if resource[:umask]
+    if resource[:environment]
+      resource[:environment].each do |var, val|
+        ENV[var] = val
+      end
+    end
 
     if resource.force?
       Puppet.info("Forcing upgrade for #{resource[:name]}")

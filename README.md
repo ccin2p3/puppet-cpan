@@ -48,6 +48,10 @@ class {'::cpan':
   config_hash    => { 'build_requires_install_policy' => 'no' },
   ftp_proxy      => 'http://your_ftp_proxy.com',
   http_proxy     => 'http://your_http_proxy.com',
+  environment    => {
+  	'OPTIONAL_ENVIRONMENT_VAR_1' => '1',
+  	'OPTIONAL_ENVIRONMENT_VAR_2' => '/foo/bar',
+  },
 }
 ```
 
@@ -111,6 +115,18 @@ class {'::cpan':
 }
 ```
 
+### Add additional environment variables
+
+Some modules may require additional environment variables to be set *e.g.* during install, like `DBD::Oracle` or `DBD::DB2`.
+
+```puppet
+cpan {'DBD::DB2':
+  ensure      => 'latest',
+  environment => {
+   'DB2_HOME' => '/path/to/DB2,
+  }
+}
+```
 
 ## Reference
 
@@ -140,6 +156,8 @@ class {'::cpan':
 #### `ftp_proxy`
 
 #### `http_proxy`
+
+#### `environment`
 
 ## Limitations
 
