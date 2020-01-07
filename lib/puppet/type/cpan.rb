@@ -38,6 +38,13 @@ Puppet::Type.newtype(:cpan) do
     end
   end
 
+  newparam(:exists_command) do
+    desc 'Custom command to test for module existence'
+    validate do |value|
+      raise ArgumentError, 'String expected for exists_command.' unless value.is_a?(String)
+    end
+  end
+
   newparam(:force, :boolean => true, :parent => Puppet::Parameter::Boolean) do
     desc 'Enable/Disable to force the installation of the module. Disabled by default.'
     defaultto :false

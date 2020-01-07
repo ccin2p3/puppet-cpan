@@ -128,6 +128,19 @@ cpan {'DBD::DB2':
 }
 ```
 
+### Overriding exists code
+
+Some modules like `Sys::RunAlone` don't return a code 0 when invoked with `perl -M$MODULE_NAME -e1`.
+This means there's no way for puppet to check if they're installed or not (in an agnostic way).
+Therefore you'll have to override the method. Use the `%` sign if you need the module name in the command line.
+
+```puppet
+cpan {'Sys::RunAlone':
+  ensure => 'present',
+  exists_command => 'perl -M% -e"__END__"',
+}
+```
+
 ## Reference
 
 ## Classes

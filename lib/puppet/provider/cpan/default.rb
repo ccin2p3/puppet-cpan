@@ -46,8 +46,11 @@ Puppet::Type.type(:cpan).provide( :default ) do
       system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::install #{resource[:name]}'")
     end
 
-    #cpan doesn't always provide the right exit code, so we double check
-    system("perl #{ll} -M#{resource[:name]} -e1 > /dev/null 2>&1")
+    exists_command = "perl #{ll} -M#{resource[:name]} -e1 > /dev/null 2>&1"
+    if resource[:exists_command]
+      exists_command = resource[:exists_command].gsub(/\%/,resource[:name])
+    end
+    system(exists_command)
     estatus = $?.exitstatus
 
     if estatus != 0
@@ -88,8 +91,12 @@ Puppet::Type.type(:cpan).provide( :default ) do
     if resource[:local_lib]
       ll = "-Mlocal::lib=#{resource[:local_lib]}"
     end
-    Puppet.debug("perl #{ll} -M#{resource[:name]} -e1 > /dev/null 2>&1")
-    output = `perl #{ll} -M#{resource[:name]} -e1 > /dev/null 2>&1`
+    exists_command = "perl #{ll} -M#{resource[:name]} -e1 > /dev/null 2>&1"
+    if resource[:exists_command]
+      exists_command = resource[:exists_command].gsub(/\%/,resource[:name])
+    end
+    Puppet.debug(exists_command)
+    output = `#{exists_command}`
     estatus = $?.exitstatus
 
     case estatus
@@ -99,7 +106,7 @@ Puppet::Type.type(:cpan).provide( :default ) do
       Puppet.debug("#{resource[:name]} not installed")
       false
     else
-      raise Puppet::Error, "perl #{ll} -M#{resource[:name]} -e1 failed with error code #{estatus}: #{output}"
+      raise Puppet::Error, "exists_command `#{exists_command}` failed with error code #{estatus}: #{output}"
     end
   end
 
