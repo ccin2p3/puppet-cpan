@@ -38,11 +38,10 @@ Puppet::Type.newtype(:cpan) do
     end
   end
 
-  newparam(:exists_command) do
-    desc 'Custom command to test for module existence'
-    validate do |value|
-      raise ArgumentError, 'String expected for exists_command.' unless value.is_a?(String)
-    end
+  newparam(:exists_strategy) do
+    defaultto "include"
+    newvalues("include", "find")
+    desc 'Strategy to test for module existence'
   end
 
   newparam(:force, :boolean => true, :parent => Puppet::Parameter::Boolean) do

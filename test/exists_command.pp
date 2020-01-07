@@ -5,7 +5,19 @@ class { '::cpan':
 }
 
 cpan { 'Sys::RunAlone':
-  ensure         => present,
-  exists_command => 'perl -Mlocal::lib=/tmp/cpan -M% -e"__END__"',
-  local_lib      => '/tmp/cpan',
+  ensure          => present,
+  exists_strategy => 'find',
+  local_lib       => '/tmp/cpan',
+}
+
+cpan { 'Class::AccessorMaker':
+  ensure          => present,
+  exists_strategy => 'find',
+  local_lib       => '/tmp/cpan',
+}
+
+cpan { 'Riemann::Client':
+  ensure          => present,
+  exists_strategy => 'include',
+  local_lib       => '/tmp/cpan',
 }

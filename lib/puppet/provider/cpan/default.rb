@@ -46,9 +46,14 @@ Puppet::Type.type(:cpan).provide( :default ) do
       system("#{umask} yes | perl #{ll} -MCPAN -e 'CPAN::install #{resource[:name]}'")
     end
 
-    exists_command = "perl #{ll} -M#{resource[:name]} -e1 > /dev/null 2>&1"
-    if resource[:exists_command]
-      exists_command = resource[:exists_command].gsub(/\%/,resource[:name])
+    case resource[:exists_strategy]
+    when :find
+      # stolen from pmtools/pmpath
+      # will not work on windows
+      # use Module::Find maybe instead
+      exists_command = "perl #{ll} -e '$module=#{resource[:name]}; eval \"local \\$^W = 0; require $module\";for ($shortpath = $module) {s{::}{/}g;s/$/.pm/;}if (defined($INC{$shortpath})) {exit 0;}; exit 2'"
+    else
+      exists_command = "perl #{ll} -M#{resource[:name]} -e1 > /dev/null 2>&1"
     end
     system(exists_command)
     estatus = $?.exitstatus
@@ -91,9 +96,14 @@ Puppet::Type.type(:cpan).provide( :default ) do
     if resource[:local_lib]
       ll = "-Mlocal::lib=#{resource[:local_lib]}"
     end
-    exists_command = "perl #{ll} -M#{resource[:name]} -e1 > /dev/null 2>&1"
-    if resource[:exists_command]
-      exists_command = resource[:exists_command].gsub(/\%/,resource[:name])
+    case resource[:exists_strategy]
+    when :find
+      # stolen from pmtools/pmpath
+      # will not work on windows
+      # use Module::Find maybe instead
+      exists_command = "perl #{ll} -e '$module=#{resource[:name]}; eval \"local \\$^W = 0; require $module\";for ($shortpath = $module) {s{::}{/}g;s/$/.pm/;}if (defined($INC{$shortpath})) {exit 0;}; exit 2'"
+    else
+      exists_command = "perl #{ll} -M#{resource[:name]} -e1 > /dev/null 2>&1"
     end
     Puppet.debug(exists_command)
     output = `#{exists_command}`
