@@ -1,6 +1,6 @@
 describe Puppet::Type.type(:cpan) do
   describe 'ensure' do
-    %i[present absent installed latest].each do |value|
+    [:present, :absent, :installed, :latest].each do |value|
       it "accepts #{value} as a value" do
         expect { described_class.new(name: 'test', ensure: value) }.not_to raise_error
       end

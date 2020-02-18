@@ -39,12 +39,12 @@ Puppet::Type.newtype(:cpan) do
   end
 
   newparam(:exists_strategy) do
-    defaultto "include"
-    newvalues("include", "find")
+    defaultto 'include'
+    newvalues('include', 'find')
     desc 'Strategy to test for module existence'
   end
 
-  newparam(:force, :boolean => true, :parent => Puppet::Parameter::Boolean) do
+  newparam(:force, boolean: true, parent: Puppet::Parameter::Boolean) do
     desc 'Enable/Disable to force the installation of the module. Disabled by default.'
     defaultto :false
   end
@@ -53,7 +53,7 @@ Puppet::Type.newtype(:cpan) do
     desc 'umask to run cpan with'
     validate do |value|
       raise ArgumentError, 'string expected for umask' unless value.is_a?(String)
-      raise ArgumentError, 'umask should be a 3 or 4 character octal string' unless value =~ /^[0-7]{3,4}$/
+      raise ArgumentError, 'umask should be a 3 or 4 character octal string' unless value =~ %r{^[0-7]{3,4}$}
     end
   end
 end

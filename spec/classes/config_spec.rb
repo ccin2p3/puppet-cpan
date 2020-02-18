@@ -1,46 +1,54 @@
 require 'spec_helper'
 
-describe "cpan::config" do
+describe 'cpan::config' do
   on_supported_os.each do |os, os_facts|
     context "On #{os}" do
       let(:facts) { os_facts }
-      context "With default ::cpan parameters" do
+
+      context 'With default ::cpan parameters' do
         let(:pre_condition) do
           [
-            'include cpan'
+            'include cpan',
           ]
         end
+
         case os_facts[:osfamily]
         when 'Debian'
-          it { should contain_file('/etc/perl/CPAN/Config.pm').with_owner('root') }
-          it { should contain_file('/etc/perl/CPAN/Config.pm').with_group('root') }
-          it { should contain_file('/etc/perl/CPAN/Config.pm').with_mode('0644') }
+          it { is_expected.to contain_file('/etc/perl/CPAN/Config.pm').with_owner('root') }
+          it { is_expected.to contain_file('/etc/perl/CPAN/Config.pm').with_group('root') }
+          it { is_expected.to contain_file('/etc/perl/CPAN/Config.pm').with_mode('0644') }
         when 'RedHat'
           case os_facts[:os]['release']['major']
           when '5'
-            it { should contain_file('/usr/lib/perl5/5.8.8/CPAN/Config.pm').with_owner('root') }
-            it { should contain_file('/usr/lib/perl5/5.8.8/CPAN/Config.pm').with_group('root') }
-            it { should contain_file('/usr/lib/perl5/5.8.8/CPAN/Config.pm').with_mode('0644') }
+            it {
+              is_expected.to contain_file('/usr/lib/perl5/5.8.8/CPAN/Config.pm').with_owner('root')
+              is_expected.to contain_file('/usr/lib/perl5/5.8.8/CPAN/Config.pm').with_group('root')
+              is_expected.to contain_file('/usr/lib/perl5/5.8.8/CPAN/Config.pm').with_mode('0644')
+            }
           when '6'
-            it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_owner('root') }
-            it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_group('root') }
-            it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_mode('0644') }
+            it {
+              is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_owner('root')
+              is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_group('root')
+              is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_mode('0644')
+            }
           when '7'
-            it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_owner('root') }
-            it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_group('root') }
-            it { should contain_file('/usr/share/perl5/CPAN/Config.pm').with_mode('0644') }
-            it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'http_proxy' => q\[\],$}) }
-            it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'ftp_proxy' => q\[\],$}) }
+            it {
+              is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_owner('root')
+              is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_group('root')
+              is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_mode('0644')
+              is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'http_proxy' => q\[\],$})
+              is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'ftp_proxy' => q\[\],$})
+            }
             it 'has empty urlist' do
-              verify_contents(catalogue, '/usr/share/perl5/CPAN/Config.pm',[
-                "  'urllist' => [",
-                "  ],"
-              ])
+              verify_contents(catalogue, '/usr/share/perl5/CPAN/Config.pm', [
+                                "  'urllist' => [",
+                                '  ],',
+                              ])
             end
           end
         end
       end
-      context "With custom ::cpan parameters" do
+      context 'With custom ::cpan parameters' do
         case os_facts[:osfamily]
         when 'RedHat'
           case os_facts[:os]['release']['major']
@@ -52,9 +60,10 @@ describe "cpan::config" do
                      ftp_proxy  => "http://your_ftp_proxy.com",
                      http_proxy => "http://your_http_proxy.com",
                    }
-                  '
+                  ',
                 ]
               end
+
               it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'ftp_proxy' => q\[http://your_ftp_proxy\.com\],$}) }
               it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'http_proxy' => q\[http://your_http_proxy\.com\],$}) }
             end
@@ -64,9 +73,10 @@ describe "cpan::config" do
                   [
                     'class { "cpan":
                       config_hash  => { "foo" => "bar" }
-                    }'
+                    }',
                   ]
                 end
+
                 it { is_expected.to contain_file('/usr/share/perl5/CPAN/Config.pm').with_content(%r{^  'foo' => q\[bar],$}) }
               end
               describe 'array' do
@@ -74,15 +84,16 @@ describe "cpan::config" do
                   [
                     'class {"cpan":
                       config_hash  => { "foo" => ["baz","bar"] }
-                    }'
+                    }',
                   ]
                 end
+
                 it do
-                  verify_contents(catalogue, '/usr/share/perl5/CPAN/Config.pm',[
-                    "  'foo' => [",
-                    "    q[baz],",
-                    "    q[bar]",
-                  ])
+                  verify_contents(catalogue, '/usr/share/perl5/CPAN/Config.pm', [
+                                    "  'foo' => [",
+                                    '    q[baz],',
+                                    '    q[bar]',
+                                  ])
                 end
               end
             end
@@ -93,12 +104,13 @@ describe "cpan::config" do
                     urllist => ["http://httpupdate3.cpanel.net/CPAN/"],
                   }'
                 end
+
                 it do
-                  verify_contents(catalogue, '/usr/share/perl5/CPAN/Config.pm',[
-                    "  'urllist' => [",
-                    "    q[http://httpupdate3.cpanel.net/CPAN/]",
-                    "  ],"
-                  ])
+                  verify_contents(catalogue, '/usr/share/perl5/CPAN/Config.pm', [
+                                    "  'urllist' => [",
+                                    '    q[http://httpupdate3.cpanel.net/CPAN/]',
+                                    '  ],',
+                                  ])
                 end
               end
               describe 'two urls' do
@@ -110,13 +122,14 @@ describe "cpan::config" do
                     ],
                   }'
                 end
+
                 it do
-                  verify_contents(catalogue, '/usr/share/perl5/CPAN/Config.pm',[
-                    "  'urllist' => [",
-                    "    q[http://httpupdate3.cpanel.net/CPAN/],",
-                    "    q[ftp://cpan.cse.msu.edu/]",
-                    "  ],"
-                  ])
+                  verify_contents(catalogue, '/usr/share/perl5/CPAN/Config.pm', [
+                                    "  'urllist' => [",
+                                    '    q[http://httpupdate3.cpanel.net/CPAN/],',
+                                    '    q[ftp://cpan.cse.msu.edu/]',
+                                    '  ],',
+                                  ])
                 end
               end
             end
