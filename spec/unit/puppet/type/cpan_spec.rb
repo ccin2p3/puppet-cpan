@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe Puppet::Type.type(:cpan) do
   describe 'ensure' do
     [:present, :absent, :installed, :latest].each do |value|
