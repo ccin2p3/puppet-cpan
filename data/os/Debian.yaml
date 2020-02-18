@@ -1,0 +1,6 @@
+---
+cpan::config::dir:
+  - /etc/perl
+  - /etc/perl/CPAN
+cpan::config::file:
+  - /etc/perl/CPAN/Config.pm

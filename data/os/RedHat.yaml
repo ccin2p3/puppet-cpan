@@ -1,0 +1,4 @@
+---
+cpan::config::dir: []
+cpan::config::file:
+  - /usr/share/perl5/CPAN/Config.pm

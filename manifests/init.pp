@@ -62,9 +62,9 @@ class cpan (
   }
   validate_array($urllist)
 
-  anchor { 'cpan::begin': } ->
-  class { '::cpan::install': } ->
-  class { '::cpan::config': } ->
-  anchor { 'cpan::end': }
+  anchor { 'cpan::begin': }
+  -> class { '::cpan::install': }
+  -> class { '::cpan::config': }
+  -> anchor { 'cpan::end': }
 
 }
