@@ -36,13 +36,4 @@ describe 'cpan' do
       end
     end
   end
-  context 'for operating system family unsupported' do
-    let(:facts) do
-      {
-        osfamily: 'unsupported',
-      }
-    end
-
-    it { expect { is_expected.to compile }.to raise_error(%r{Module cpan is not supported}) }
-  end
 end

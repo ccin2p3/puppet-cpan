@@ -36,17 +36,20 @@
 # }
 #
 class cpan (
-  $manage_config     = $cpan::params::manage_config,
-  $manage_package    = $cpan::params::manage_package,
-  $installdirs       = $cpan::params::installdirs,
-  $local_lib         = $cpan::params::local_lib,
-  $config_template   = $cpan::params::config_template,
-  $config_hash       = $cpan::params::config_hash,
-  $package_ensure    = $cpan::params::package_ensure,
-  $ftp_proxy         = $cpan::params::ftp_proxy,
-  $http_proxy        = $cpan::params::http_proxy,
-  $urllist           = $cpan::params::urllist,
-) inherits cpan::params {
+  $manage_package,
+  $config_hash,
+  $package_name,
+  Optional[Array[String[1]]] $config_file = undef,
+  Optional[Array[String[1]]] $config_dir = undef,
+  $package_ensure    = 'present',
+  $manage_config     = true,
+  $installdirs       = 'site',
+  $local_lib         = false,
+  $config_template   = 'cpan/cpan.conf.erb',
+  $ftp_proxy         = undef,
+  $http_proxy        = undef,
+  $urllist           = [],
+) {
 
   validate_bool($manage_config)
   validate_bool($manage_package)

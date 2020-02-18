@@ -1,6 +1,12 @@
 ---
-cpan::config::dir:
+cpan::config_dir:
   - /etc/perl
   - /etc/perl/CPAN
-cpan::config::file:
+cpan::config_file:
   - /etc/perl/CPAN/Config.pm
+cpan::manage_package: true
+cpan::package_name:
+  - perl
+  - perl-CPAN
+cpan::local_lib_package_name:
+  - liblocal-lib-perl
