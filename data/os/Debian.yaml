@@ -7,6 +7,5 @@ cpan::config_file:
 cpan::manage_package: true
 cpan::package_name:
   - perl
-  - perl-CPAN
 cpan::local_lib_package_name:
   - liblocal-lib-perl
