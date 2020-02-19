@@ -23,8 +23,10 @@ describe 'cpan::install' do
         case os_facts[:osfamily]
         when 'Debian'
           it { is_expected.to contain_package('perl').with(ensure: 'present') }
+          it { is_expected.not_to contain_package('perl-CPAN').with(ensure: 'present') }
         when 'RedHat'
           it { is_expected.to contain_package('perl-CPAN').with(ensure: 'present') }
+          it { is_expected.not_to contain_package('perl').with(ensure: 'present') }
         end
       end
       describe 'should allow package ensure to be overridden' do
