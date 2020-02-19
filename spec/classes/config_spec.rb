@@ -45,6 +45,12 @@ describe 'cpan::config' do
                                 '  ],',
                               ])
             end
+          when '8'
+            it {
+              is_expected.to contain_file('/usr/share/perl5/vendor_perl/CPAN/Config.pm').with_owner('root')
+              is_expected.to contain_file('/usr/share/perl5/vendor_perl/CPAN/Config.pm').with_group('root')
+              is_expected.to contain_file('/usr/share/perl5/vendor_perl/CPAN/Config.pm').with_mode('0644')
+            }
           end
         end
       end
