@@ -15,7 +15,7 @@ describe 'cpan' do
       end
     end
     it 'rejects other values' do
-      expect { described_type.new(name: 'test', ensure: 'foo') }.to raise_error(Puppet::Error)
+      expect { is_expected.to be_valid_type.with_set_attributes(ensure: 'foo') }.to raise_error(Puppet::ResourceError)
     end
   end
 
@@ -41,9 +41,7 @@ describe 'cpan' do
       end
     end
     it 'rejects other values' do
-      # for some reason expect { be_valid_type.with_set_attributes({:force => 'nope'})}.to raise_error doesn't raise
-      # expect {be_valid_type.with_set_attributes({:force => 'nope'})}.to raise_error(Puppet::ResourceError)
-      expect { described_type.new(name: 'test', force: 'nope') }.to raise_error(Puppet::Error)
+      expect { is_expected.to be_valid_type.with_set_attributes(force: 'nope') }.to raise_error(Puppet::ResourceError)
     end
     it 'defaults to false' do
       expect(described_type.new(name: 'test')[:force]).to eq(false)
@@ -67,7 +65,7 @@ describe 'cpan' do
     describe 'invalid values' do
       [true, false, 220, '0', '888', 'invalid'].each do |value|
         it "rejects #{value}" do
-          expect { described_type.new(name: 'test', umask: value) }.to raise_error(Puppet::Error)
+          expect { is_expected.to be_valid_type.with_set_attributes(umask: value) }.to raise_error(Puppet::ResourceError)
         end
       end
     end
