@@ -1,6 +1,6 @@
 {
   "name": "ccin2p3-cpan",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "meltwater",
   "summary": "Provides a puppet type to easily install Perl CPAN modules.",
   "license": "Apache-2.0",
