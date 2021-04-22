@@ -10,16 +10,29 @@ Puppet::Type.type(:cpan).provide(:default) do
 
   def force; end
 
-  def latest?
+  def version
     if resource[:local_lib]
       ll = "-Mlocal::lib=#{resource[:local_lib]}"
     end
     current_version = `perl #{ll} -M#{resource[:name]} -e 'print $#{resource[:name]}::VERSION'`
+    current_version.chomp
+    return current_version
+  end
+
+  def latest
+    if resource[:local_lib]
+      ll = "-Mlocal::lib=#{resource[:local_lib]}"
+    end
     cpan_str = `perl #{ll} -e 'use CPAN; my $mod=CPAN::Shell->expand("Module","#{resource[:name]}"); \
                 printf("%s", $mod->cpan_version eq "undef" || !defined($mod->cpan_version) ? "-" : $mod->cpan_version);'`
     latest_version = cpan_str.match(%r{^[0-9]+.?[0-9]*$})[0]
-    current_version.chomp
     latest_version.chomp
+    return latest_version
+  end
+
+  def latest?
+    current_version = self.version
+    latest_version = self.latest
     if current_version < latest_version
       return false
     end
