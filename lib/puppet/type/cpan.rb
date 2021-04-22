@@ -34,9 +34,13 @@ Puppet::Type.newtype(:cpan) do
         if provider.latest?
           return true
         end
-        self.debug "CPAN Module %s version is out of date, installed version: %s, latest version: %s" %
-                [@resource.name, provider.version, provider.latest]
-       return false
+        debug 'CPAN Module %s version is out of date, installed version: %s, latest version: %s' %
+          [
+	    @resource.name,
+            provider.version,
+            provider.latest
+          ]
+        return false
       end
     end
   end

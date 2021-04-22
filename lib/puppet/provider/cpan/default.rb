@@ -16,7 +16,7 @@ Puppet::Type.type(:cpan).provide(:default) do
     end
     current_version = `perl #{ll} -M#{resource[:name]} -e 'print $#{resource[:name]}::VERSION'`
     current_version.chomp
-    return current_version
+    current_version
   end
 
   def latest
@@ -27,12 +27,12 @@ Puppet::Type.type(:cpan).provide(:default) do
                 printf("%s", $mod->cpan_version eq "undef" || !defined($mod->cpan_version) ? "-" : $mod->cpan_version);'`
     latest_version = cpan_str.match(%r{^[0-9]+.?[0-9]*$})[0]
     latest_version.chomp
-    return latest_version
+    latest_version
   end
 
   def latest?
-    current_version = self.version
-    latest_version = self.latest
+    current_version = version
+    latest_version = latest
     if current_version < latest_version
       return false
     end
