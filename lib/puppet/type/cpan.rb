@@ -27,20 +27,19 @@ Puppet::Type.newtype(:cpan) do
       if is == :absent
         provider.create
       end
-      if should == :present
+      case should
+      when :present
         return true unless [:absent, :purged, :held].include?(is)
-      end
-      if should == :latest
-        if provider.latest?
-          return true
-        end
+      when :latest
+        return true if provider.latest?
+
         debug 'CPAN Module %s version is out of date, installed version: %s, latest version: %s' %
-          [
-	    @resource.name,
-            provider.version,
-            provider.latest
-          ]
-        return false
+              [
+                @resource.name,
+                provider.version,
+                provider.latest,
+              ]
+        false
       end
     end
   end
