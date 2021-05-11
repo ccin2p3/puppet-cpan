@@ -21,6 +21,27 @@ Puppet::Type.newtype(:cpan) do
         provider.update
       end
     end
+
+    def insync?(is)
+      @should ||= []
+      if is == :absent
+        provider.create
+      end
+      case should
+      when :present
+        return true unless [:absent, :purged, :held].include?(is)
+      when :latest
+        return true if provider.latest?
+
+        debug 'CPAN Module %s version is out of date, installed version: %s, latest version: %s' %
+              [
+                @resource.name,
+                provider.version,
+                provider.latest,
+              ]
+        false
+      end
+    end
   end
 
   newparam(:name) do
