@@ -1,0 +1,3 @@
+---
+cpan::config_file:
+  - /usr/share/perl5/vendor_perl/CPAN/Config.pm
