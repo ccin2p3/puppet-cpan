@@ -51,19 +51,19 @@ class cpan (
   $urllist           = [],
 ) {
 
-  validate_bool($manage_config)
-  validate_bool($manage_package)
-  validate_string($installdirs)
-  validate_bool($local_lib)
-  validate_string($config_template)
-  validate_string($package_ensure)
+  validate_legacy(Boolean, 'validate_bool', $manage_config)
+  validate_legacy(Boolean, 'validate_bool', $manage_package)
+  validate_legacy(String, 'validate_string', $installdirs)
+  validate_legacy(Boolean, 'validate_bool', $local_lib)
+  validate_legacy(String, 'validate_string', $config_template)
+  validate_legacy(String, 'validate_string', $package_ensure)
   if $ftp_proxy {
-    validate_string($ftp_proxy)
+    validate_legacy(String, 'validate_string', $ftp_proxy)
   }
   if $http_proxy {
-    validate_string($http_proxy)
+    validate_legacy(String, 'validate_string', $http_proxy)
   }
-  validate_array($urllist)
+  validate_legacy(Array, 'validate_array', $urllist)
 
   anchor { 'cpan::begin': }
   -> class { '::cpan::install': }
